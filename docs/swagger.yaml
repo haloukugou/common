@@ -1,0 +1,510 @@
+definitions:
+  common.Res:
+    properties:
+      data: {}
+      msg:
+        type: string
+      state:
+        type: boolean
+    type: object
+  request.AdminLoginParams:
+    properties:
+      account:
+        type: string
+      password:
+        type: string
+    required:
+    - account
+    - password
+    type: object
+  request.BindMail:
+    properties:
+      code:
+        type: string
+      mail:
+        type: string
+      source:
+        type: integer
+    required:
+    - code
+    - mail
+    - source
+    type: object
+  request.EditInfo:
+    properties:
+      name:
+        type: string
+      title:
+        type: string
+    required:
+    - name
+    type: object
+  request.EditPwd:
+    properties:
+      newPassword:
+        type: string
+      newRpassword:
+        type: string
+      password:
+        type: string
+    required:
+    - newPassword
+    - newRpassword
+    type: object
+  request.Follow:
+    properties:
+      followedPerson:
+        type: integer
+    required:
+    - followedPerson
+    type: object
+  request.FollowList:
+    properties:
+      page:
+        type: integer
+      pageSize:
+        type: integer
+    required:
+    - page
+    - pageSize
+    type: object
+  request.LatestParams:
+    properties:
+      client_version:
+        type: string
+    required:
+    - client_version
+    type: object
+  request.LoginParams:
+    properties:
+      account:
+        type: string
+      code:
+        type: string
+      password:
+        type: string
+      source:
+        type: integer
+      typeString:
+        type: string
+    required:
+    - account
+    - source
+    - typeString
+    type: object
+  request.RegisterParams:
+    properties:
+      account:
+        type: string
+      code:
+        type: string
+      mail:
+        type: string
+      password:
+        type: string
+      rpassword:
+        type: string
+      source:
+        type: integer
+      typeString:
+        type: string
+    required:
+    - source
+    - typeString
+    type: object
+  request.RetrievePwd:
+    properties:
+      code:
+        type: string
+      mail:
+        type: string
+      newPassword:
+        type: string
+      newRpassword:
+        type: string
+      source:
+        type: integer
+    required:
+    - code
+    - mail
+    - newPassword
+    - newRpassword
+    - source
+    type: object
+  request.SendMail:
+    properties:
+      mail:
+        type: string
+      type:
+        type: string
+    required:
+    - mail
+    - type
+    type: object
+host: 127.0.0.1:8888
+info:
+  contact: {}
+  description: dj的go接口文档
+  title: 简单的社交系统
+  version: "1.0"
+paths:
+  /admin/apkList:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - admintoken: []
+      summary: app列表
+      tags:
+      - 管理员
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.AdminLoginParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      summary: 管理员登录
+      tags:
+      - 管理员
+  /admin/release:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - admintoken: []
+      summary: 发布app
+      tags:
+      - 管理员
+  /admin/upload:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      summary: 上传apk文件
+      tags:
+      - 管理员
+  /replace/latest:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.LatestParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      summary: 最新版本信息
+      tags:
+      - 版本信息
+  /service/sendMail:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.SendMail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      summary: 发送邮件
+      tags:
+      - 邮件
+  /user/bindMail:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.BindMail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 绑定邮箱
+      tags:
+      - 用户
+  /user/cancelFollow:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.Follow'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 取消关注
+      tags:
+      - 用户
+  /user/editInfo:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.EditInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 编辑信息
+      tags:
+      - 用户
+  /user/editPwd:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.EditPwd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 修改密码
+      tags:
+      - 用户
+  /user/fansList:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.FollowList'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 粉丝列表
+      tags:
+      - 用户
+  /user/follow:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.Follow'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 关注
+      tags:
+      - 用户
+  /user/followList:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.FollowList'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 关注列表
+      tags:
+      - 用户
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.LoginParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      summary: 用户登录接口
+      tags:
+      - 用户
+  /user/loginOut:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 退出登录接口
+      tags:
+      - 用户
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.RegisterParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      summary: 用户注册接口
+      tags:
+      - 用户
+  /user/retrievePwd:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 请求参数
+        in: body
+        name: params
+        schema:
+          $ref: '#/definitions/request.RetrievePwd'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 找回密码
+      tags:
+      - 用户
+  /user/userInfo:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Res'
+      security:
+      - Token: []
+      summary: 用户详情
+      tags:
+      - 用户
+securityDefinitions:
+  Token:
+    in: header
+    name: token
+    type: apiKey
+swagger: "2.0"

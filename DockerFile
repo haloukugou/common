@@ -1,0 +1,28 @@
+# 使用基础镜像
+FROM golang:alpine
+
+# 设置配置信息
+ENV GO111MODULE=on \
+    GOPROXY=https://goproxy.cn,direct \
+    CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+# 创建文件夹
+RUN mkdir /app
+
+# 工作文件夹
+WORKDIR /app
+
+# 复制到工作文件夹
+COPY . /app
+
+# 编译
+#RUN go build -o go_dj /app/main.go
+
+# 暴露端口
+EXPOSE 8080
+
+# 执行文件
+#CMD /app/go_dj
+
