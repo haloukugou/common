@@ -1,9 +1,9 @@
-package controller
+package controllers
 
 import (
+	"dj/app/common"
+	"dj/app/services"
 	"dj/bootstrap"
-	"dj/common"
-	"dj/logic"
 	"dj/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -20,7 +20,7 @@ var typeString = []string{"bind", "register", "login", "pwd"}
 //	@Produce		application/json
 //
 // @Param			params		body		request.SendMail		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/service/sendMail [post]
 func SendMail(c *gin.Context) {
 	mail := request.SendMail{}
@@ -36,7 +36,7 @@ func SendMail(c *gin.Context) {
 		common.Fail(c, "参数错误-1")
 		return
 	}
-	r := &logic.Kong{}
+	r := &services.Kong{}
 	err := r.SendMail(c, mail)
 	if err != nil {
 		common.Fail(c, err.Error())

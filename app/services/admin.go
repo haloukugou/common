@@ -1,10 +1,10 @@
-package logic
+package services
 
 import (
+	"dj/app/common"
+	models2 "dj/app/models"
 	"dj/bootstrap"
-	"dj/common"
 	"dj/constants"
-	"dj/model"
 	"dj/request"
 	"encoding/json"
 	"fmt"
@@ -35,7 +35,7 @@ type ApkListData struct {
 }
 
 func (l *LoginResult) Login(c *gin.Context, params request.AdminLoginParams) error {
-	admin := new(model.Admin)
+	admin := new(models2.Admin)
 	bootstrap.Db.Where("account = ?", params.Account).First(&admin)
 	if admin.Id <= 0 {
 		return fmt.Errorf("管理账号不存")
@@ -70,7 +70,7 @@ func (a *ApkList) ApkList(c *gin.Context, params request.ApkListParams) error {
 	a.Page = params.Page
 	a.PageSize = params.PageSize
 
-	l := new(model.Apk)
+	l := new(models2.Apk)
 
 	bootstrap.Db.Model(&l).Where("id > 0").Count(&a.Total)
 
@@ -111,7 +111,7 @@ func (n *Nul) Release(c *gin.Context, params request.ReleaseParams) error {
 		}
 	}
 	// 查询上个版本的发布信息
-	apk := new(model.Apk)
+	apk := new(models2.Apk)
 	bootstrap.Db.Where("id>0").Order("id desc").First(&apk)
 	if apk.Id > 0 {
 		oldVersion := strings.Split(apk.Version, ".")
@@ -126,7 +126,7 @@ func (n *Nul) Release(c *gin.Context, params request.ReleaseParams) error {
 			return fmt.Errorf("当前版本必须高于上个版本号")
 		}
 	}
-	newApk := new(model.Apk)
+	newApk := new(models2.Apk)
 	newApk.File = params.File
 	newApk.Version = params.Version
 	newApk.IsForce = params.IsForce

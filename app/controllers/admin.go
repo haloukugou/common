@@ -1,9 +1,9 @@
-package controller
+package controllers
 
 import (
+	"dj/app/common"
+	services2 "dj/app/services"
 	"dj/bootstrap"
-	"dj/common"
-	"dj/logic"
 	"dj/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -18,7 +18,7 @@ import (
 //	@Produce		application/json
 //
 // @Param			params		body		request.AdminLoginParams		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/admin/login [post]
 func AdminLogin(c *gin.Context) {
 	params := request.AdminLoginParams{}
@@ -27,7 +27,7 @@ func AdminLogin(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	result := logic.LoginResult{}
+	result := services2.LoginResult{}
 	err := result.Login(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())
@@ -45,7 +45,7 @@ func AdminLogin(c *gin.Context) {
 //	@Produce		application/json
 //
 // @Security 		admintoken
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/admin/apkList [post]
 func ApkList(c *gin.Context) {
 	params := request.ApkListParams{}
@@ -54,7 +54,7 @@ func ApkList(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	re := logic.ApkList{}
+	re := services2.ApkList{}
 	err := re.ApkList(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())
@@ -71,7 +71,7 @@ func ApkList(c *gin.Context) {
 //	@Accept			application/json
 //	@Produce		application/json
 //
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/admin/upload [post]
 func Upload(c *gin.Context) {
 	file, err := c.FormFile("file")
@@ -111,7 +111,7 @@ func Upload(c *gin.Context) {
 //	@Produce		application/json
 //
 // @Security 		admintoken
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/admin/release [post]
 func Release(c *gin.Context) {
 	params := request.ReleaseParams{}
@@ -120,7 +120,7 @@ func Release(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	re := logic.Nul{}
+	re := services2.Nul{}
 	e := re.Release(c, params)
 	if e != nil {
 		common.Fail(c, e.Error())

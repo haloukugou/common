@@ -36,7 +36,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -68,7 +68,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -95,7 +95,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -117,7 +117,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -149,7 +149,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -181,7 +181,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -218,7 +218,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -255,7 +255,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -292,7 +292,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -329,7 +329,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -366,7 +366,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -403,7 +403,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -440,7 +440,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -472,7 +472,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -499,7 +499,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -531,7 +531,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -568,7 +568,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -595,7 +595,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Res"
+                            "$ref": "#/definitions/utils.Res"
                         }
                     }
                 }
@@ -603,7 +603,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "common.Res": {
+        "utils.Res": {
             "type": "object",
             "properties": {
                 "data": {},

@@ -1,8 +1,8 @@
-package logic
+package services
 
 import (
+	"dj/app/models"
 	"dj/bootstrap"
-	"dj/model"
 	"dj/request"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -37,7 +37,7 @@ func (l *Latest) LatestInfo(c *gin.Context, params request.LatestParams) error {
 	}
 
 	// 查询最新版本信息
-	apk := new(model.Apk)
+	apk := new(models.Apk)
 	e := bootstrap.Db.Where("id>0").Order("id desc").First(&apk).Error
 	if e != nil {
 		return e

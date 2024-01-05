@@ -1,7 +1,7 @@
 package bootstrap
 
 import (
-	"dj/common"
+	"dj/app/common"
 	"dj/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

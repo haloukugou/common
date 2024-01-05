@@ -1,8 +1,8 @@
 package middleware
 
 import (
+	"dj/app/common"
 	"dj/bootstrap"
-	"dj/common"
 	"dj/constants"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"

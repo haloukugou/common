@@ -1,9 +1,9 @@
-package controller
+package controllers
 
 import (
+	"dj/app/common"
+	"dj/app/services"
 	"dj/bootstrap"
-	"dj/common"
-	"dj/logic"
 	"dj/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -18,7 +18,7 @@ import (
 //	@Produce		application/json
 //
 // @Param			params		body		request.LatestParams		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/replace/latest [post]
 func Latest(c *gin.Context) {
 	params := request.LatestParams{}
@@ -27,7 +27,7 @@ func Latest(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	latest := logic.Latest{}
+	latest := services.Latest{}
 	err := latest.LatestInfo(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())

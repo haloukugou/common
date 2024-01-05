@@ -3,9 +3,11 @@ package common
 import (
 	"crypto/md5"
 	"crypto/rand"
+	"dj/constants"
 	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -15,37 +17,35 @@ import (
 	time2 "time"
 )
 
-const (
-	SUCCESS bool = true
-	FAILED  bool = false
-)
-
 type Res struct {
-	State bool        `json:"state"`
-	Msg   string      `json:"msg"`
-	Data  interface{} `json:"data"`
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
 }
 
-// Fail 返回错误信息
+// Fail 返回失败信息
 func Fail(c *gin.Context, msg string) {
-	c.JSON(http.StatusOK, Res{State: FAILED, Msg: msg, Data: map[string]interface{}{}})
+	c.JSON(http.StatusOK, Res{Code: constants.FAIL_CODE, Msg: msg, Data: map[string]interface{}{}})
 }
 
 // Success 返回成功信息
 func Success(c *gin.Context, data interface{}) {
-	c.JSON(http.StatusOK, Res{State: SUCCESS, Msg: "success", Data: data})
+	c.JSON(http.StatusOK, Res{Code: constants.SUCCESS_CODE, Msg: "success", Data: data})
 }
 
 // Ok 返回没有data的成功信息
 func Ok(c *gin.Context) {
-	c.JSON(http.StatusOK, Res{State: SUCCESS, Msg: "success", Data: map[string]interface{}{}})
+	c.JSON(http.StatusOK, Res{Code: constants.SUCCESS_CODE, Msg: "success", Data: map[string]interface{}{}})
 }
 
 // RandStr 随机字符串
 func RandStr(length int) string {
 	baseStr := "1234567890qwertyuiopasdfghjklzxcvbnm"
 	bytes := make([]byte, length)
-	rand.Read(bytes)
+	_, err := rand.Read(bytes)
+	if err != nil {
+		return ""
+	}
 	for i, b := range bytes {
 		bytes[i] = baseStr[b%byte(len(baseStr))]
 	}
@@ -132,4 +132,15 @@ func VerifyEmailFormat(email string) bool {
 	pattern := `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*`
 	reg := regexp.MustCompile(pattern)
 	return reg.MatchString(email)
+}
+
+// ValidateMobile 校验手机号
+func ValidateMobile(fl validator.FieldLevel) bool {
+	fmt.Println("123123123")
+	mobile := fl.Field().String()
+	ok, _ := regexp.MatchString(`^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$`, mobile)
+	if !ok {
+		return false
+	}
+	return true
 }

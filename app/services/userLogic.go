@@ -1,10 +1,10 @@
-package logic
+package services
 
 import (
+	"dj/app/common"
+	"dj/app/models"
 	"dj/bootstrap"
-	"dj/common"
 	"dj/constants"
-	"dj/model"
 	"dj/request"
 	"encoding/json"
 	"fmt"
@@ -68,7 +68,7 @@ func (n *Nul) HandleRegister(ctx *gin.Context, params request.RegisterParams) er
 // 账号注册
 func accountRegister(params request.RegisterParams) error {
 	// 查询数据库是否有相同账号
-	user := new(model.User)
+	user := new(models.User)
 	bootstrap.Db.Where("account =?", params.Account).Where("source = ?", params.Source).First(&user)
 	if user.Id > 0 {
 		return fmt.Errorf("账号已存在")
@@ -100,7 +100,7 @@ func mailRegister(ctx *gin.Context, params request.RegisterParams) error {
 		return fmt.Errorf("验证码错误")
 	}
 	// 查询数据库是否有相同邮箱
-	user := new(model.User)
+	user := new(models.User)
 	bootstrap.Db.Where("mail =?", params.Mail).Where("source=?", params.Source).First(&user)
 	if user.Id > 0 {
 		return fmt.Errorf("邮箱已存在")
@@ -128,7 +128,7 @@ func (t *TokenResult) HandleLogin(c *gin.Context, params request.LoginParams) er
 	switch params.TypeString {
 	case "account":
 		// 查询数据库是否有相同账号
-		user := new(model.User)
+		user := new(models.User)
 		bootstrap.Db.Where("account =?", params.Account).Where("source = ?", params.Source).First(&user)
 		if user.Id <= 0 {
 			return fmt.Errorf("用户不存在,请先注册")
@@ -154,7 +154,7 @@ func (t *TokenResult) HandleLogin(c *gin.Context, params request.LoginParams) er
 			return fmt.Errorf("请输入邮箱验证码")
 		}
 		// 查询账号是否存在
-		user := new(model.User)
+		user := new(models.User)
 		bootstrap.Db.Where("mail=?", params.Account).Where("source = ?", params.Source).First(&user)
 		if user.Id <= 0 {
 			return fmt.Errorf("该邮箱尚未注册")
@@ -183,7 +183,7 @@ func (t *TokenResult) HandleLogin(c *gin.Context, params request.LoginParams) er
 }
 
 // loginInfoToRedis 登录信息放入redis
-func loginInfoToRedis(c *gin.Context, user *model.User, token string) error {
+func loginInfoToRedis(c *gin.Context, user *models.User, token string) error {
 	redisData := make(map[string]string, 5)
 	redisData["id"] = strconv.FormatUint(user.Id, 10)
 	redisData["name"] = user.Name
@@ -252,7 +252,7 @@ func (n *Nul) EditInfo(ctx *gin.Context, params request.EditInfo) error {
 	idInt64, _ := strconv.ParseInt(i["id"], 10, 64)
 	userId := uint64(idInt64)
 	// 查询数据库用户信息
-	user := new(model.User)
+	user := new(models.User)
 	bootstrap.Db.Where("id = ?", userId).First(&user)
 
 	// 编辑用户详情
@@ -316,7 +316,7 @@ func (n *Nul) EditPwd(ctx *gin.Context, params request.EditPwd) error {
 	userId := uint64(idInt64)
 
 	// 查数据库用户信息
-	user := new(model.User)
+	user := new(models.User)
 	bootstrap.Db.Where("id = ?", userId).First(&user)
 	if user.Salt != "" && user.Password != "" {
 		if params.Password == "" {
@@ -337,7 +337,7 @@ func (n *Nul) EditPwd(ctx *gin.Context, params request.EditPwd) error {
 	np := common.CreateMd5Str(salt, params.NewPassword)
 
 	// 编辑密码
-	dbErr := bootstrap.Db.Model(&user).Updates(model.User{Salt: salt, Password: np}).Error
+	dbErr := bootstrap.Db.Model(&user).Updates(models.User{Salt: salt, Password: np}).Error
 	if dbErr != nil {
 		bootstrap.Log.Error("编辑密码信息失败,msg=" + dbErr.Error())
 		return dbErr
@@ -350,7 +350,7 @@ func (n *Nul) EditPwd(ctx *gin.Context, params request.EditPwd) error {
 }
 
 func (n *Nul) BindMail(ctx *gin.Context, params request.BindMail) error {
-	user := new(model.User)
+	user := new(models.User)
 	// 查询邮件是否被绑定
 	bootstrap.Db.Where("mail=?", params.Mail).Where("source = ?", params.Source).First(&user)
 	if user.Id > 0 {
@@ -378,7 +378,7 @@ func (n *Nul) BindMail(ctx *gin.Context, params request.BindMail) error {
 	idInt64, _ := strconv.ParseInt(i["id"], 10, 64)
 	userId := uint64(idInt64)
 	bootstrap.Db.Where("id=?", userId).First(&user)
-	rErr := bootstrap.Db.Model(&user).Updates(model.User{Mail: params.Mail}).Error
+	rErr := bootstrap.Db.Model(&user).Updates(models.User{Mail: params.Mail}).Error
 	if rErr != nil {
 		return rErr
 	}
@@ -390,7 +390,7 @@ func (n *Nul) BindMail(ctx *gin.Context, params request.BindMail) error {
 
 func (n *Nul) RetrievePwd(ctx *gin.Context, params request.RetrievePwd) error {
 	// 查询账号是否存在
-	user := new(model.User)
+	user := new(models.User)
 	bootstrap.Db.Where("mail=?", params.Mail).Where("source = ?", params.Source).First(&user)
 	if user.Id <= 0 {
 		return fmt.Errorf("账号信息不存在")
@@ -411,7 +411,7 @@ func (n *Nul) RetrievePwd(ctx *gin.Context, params request.RetrievePwd) error {
 	// 更新账号密码
 	salt := common.RandStr(6)
 	pwd := common.CreateMd5Str(salt, params.NewPassword)
-	dErr := bootstrap.Db.Model(&user).Updates(model.User{Salt: salt, Password: pwd}).Error
+	dErr := bootstrap.Db.Model(&user).Updates(models.User{Salt: salt, Password: pwd}).Error
 	if dErr != nil {
 		return dErr
 	}

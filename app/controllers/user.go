@@ -1,10 +1,10 @@
-package controller
+package controllers
 
 import (
+	"dj/app/common"
+	"dj/app/request"
+	services2 "dj/app/services"
 	"dj/bootstrap"
-	"dj/common"
-	"dj/logic"
-	"dj/request"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -18,7 +18,7 @@ import (
 //	@Produce		application/json
 //
 // @Param			params		body		request.RegisterParams		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/register [post]
 func Register(c *gin.Context) {
 	// 获取参数
@@ -34,7 +34,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	reg := &logic.Nul{}
+	reg := &services2.Nul{}
 	rErr := reg.HandleRegister(c, params)
 	if rErr != nil {
 		bootstrap.Log.Warn("用户注册,失败", zap.Any("error", rErr.Error()))
@@ -54,7 +54,7 @@ func Register(c *gin.Context) {
 //	@Produce		application/json
 //
 // @Param			params		body		request.LoginParams		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/login [post]
 func Login(c *gin.Context) {
 	// 获取参数
@@ -69,7 +69,7 @@ func Login(c *gin.Context) {
 		common.Fail(c, "来源信息不存在")
 		return
 	}
-	tokenResult := &logic.TokenResult{}
+	tokenResult := &services2.TokenResult{}
 	rErr := tokenResult.HandleLogin(c, params)
 	if rErr != nil {
 		bootstrap.Log.Error("用户登录,失败", zap.Any("error", rErr.Error()))
@@ -88,10 +88,10 @@ func Login(c *gin.Context) {
 //	@Produce		application/json
 //
 // @Security 		Token
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/loginOut [post]
 func LoginOut(c *gin.Context) {
-	r := &logic.Nul{}
+	r := &services2.Nul{}
 	e := r.HandleLoginOut(c)
 	if e != nil {
 		bootstrap.Log.Error("用户退出登录,失败", zap.Any("error", e.Error()))
@@ -110,10 +110,10 @@ func LoginOut(c *gin.Context) {
 //	@Produce		application/json
 //
 // @Security 		Token
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/userInfo [post]
 func UserInfo(c *gin.Context) {
-	r := &logic.UserInfo{}
+	r := &services2.UserInfo{}
 	e := r.UserInfo(c)
 	if e != nil {
 		common.Fail(c, e.Error())
@@ -132,7 +132,7 @@ func UserInfo(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.EditInfo		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/editInfo [post]
 func EditInfo(c *gin.Context) {
 	params := request.EditInfo{}
@@ -141,7 +141,7 @@ func EditInfo(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	r := &logic.Nul{}
+	r := &services2.Nul{}
 	e := r.EditInfo(c, params)
 	if e != nil {
 		common.Fail(c, e.Error())
@@ -160,7 +160,7 @@ func EditInfo(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.EditPwd		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/editPwd [post]
 func EditPwd(c *gin.Context) {
 	params := request.EditPwd{}
@@ -169,7 +169,7 @@ func EditPwd(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	r := &logic.Nul{}
+	r := &services2.Nul{}
 	e := r.EditPwd(c, params)
 	if e != nil {
 		common.Fail(c, e.Error())
@@ -188,7 +188,7 @@ func EditPwd(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.BindMail		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/bindMail [post]
 func BindMail(c *gin.Context) {
 	mail := request.BindMail{}
@@ -202,7 +202,7 @@ func BindMail(c *gin.Context) {
 		common.Fail(c, "来源信息不存在")
 		return
 	}
-	r := &logic.Nul{}
+	r := &services2.Nul{}
 	err := r.BindMail(c, mail)
 	if err != nil {
 		common.Fail(c, err.Error())
@@ -221,7 +221,7 @@ func BindMail(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.RetrievePwd		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/retrievePwd [post]
 func RetrievePwd(c *gin.Context) {
 	params := request.RetrievePwd{}
@@ -235,7 +235,7 @@ func RetrievePwd(c *gin.Context) {
 		common.Fail(c, "来源信息不存在")
 		return
 	}
-	r := logic.Nul{}
+	r := services2.Nul{}
 	err := r.RetrievePwd(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())
@@ -254,7 +254,7 @@ func RetrievePwd(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.Follow		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/follow [post]
 func Follow(c *gin.Context) {
 	params := request.Follow{}
@@ -263,7 +263,7 @@ func Follow(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	r := logic.Nul{}
+	r := services2.Nul{}
 	err := r.Follow(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())
@@ -282,7 +282,7 @@ func Follow(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.Follow		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/cancelFollow [post]
 func CancelFollow(c *gin.Context) {
 	params := request.Follow{}
@@ -291,7 +291,7 @@ func CancelFollow(c *gin.Context) {
 		common.Fail(c, "参数错误")
 		return
 	}
-	r := logic.Nul{}
+	r := services2.Nul{}
 	err := r.CancelFollow(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())
@@ -310,7 +310,7 @@ func CancelFollow(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.FollowList		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/followList [post]
 func FollowList(c *gin.Context) {
 	params := request.FollowList{}
@@ -319,7 +319,7 @@ func FollowList(c *gin.Context) {
 		common.Fail(c, "参数错误-1")
 		return
 	}
-	f := logic.FollowList{}
+	f := services2.FollowList{}
 	err := f.FollowList(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())
@@ -338,7 +338,7 @@ func FollowList(c *gin.Context) {
 //
 // @Security 		Token
 // @Param			params		body		request.FollowList		false		"请求参数"
-// @Success			200			{object}	common.Res
+// @Success			200			{object}	utils.Res
 // @Router			/user/fansList [post]
 func FansList(c *gin.Context) {
 	params := request.FollowList{}
@@ -347,7 +347,7 @@ func FansList(c *gin.Context) {
 		common.Fail(c, "参数错误-1")
 		return
 	}
-	f := logic.FollowList{}
+	f := services2.FollowList{}
 	err := f.FansList(c, params)
 	if err != nil {
 		common.Fail(c, err.Error())

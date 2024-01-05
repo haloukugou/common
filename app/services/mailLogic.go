@@ -1,8 +1,8 @@
-package logic
+package services
 
 import (
+	"dj/app/common"
 	"dj/bootstrap"
-	"dj/common"
 	"dj/config"
 	"dj/constants"
 	"dj/request"

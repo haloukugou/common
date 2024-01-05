@@ -1,8 +1,8 @@
-package logic
+package services
 
 import (
+	models2 "dj/app/models"
 	"dj/bootstrap"
-	"dj/model"
 	"dj/request"
 	"encoding/json"
 	"fmt"
@@ -38,10 +38,10 @@ func (n *Nul) Follow(ctx *gin.Context, params request.Follow) error {
 	}
 	idInt64, _ := strconv.ParseInt(i["id"], 10, 64)
 	userId := uint64(idInt64)
-	loginUser := new(model.User)
+	loginUser := new(models2.User)
 	bootstrap.Db.Where("id=?", userId).First(&loginUser)
 
-	user := new(model.User)
+	user := new(models2.User)
 	bootstrap.Db.Where("id=?", params.FollowedPerson).Where("source = ?", loginUser.Source).First(&user)
 	if user.Id <= 0 {
 		return fmt.Errorf("关注用户不存在")
@@ -49,7 +49,7 @@ func (n *Nul) Follow(ctx *gin.Context, params request.Follow) error {
 	if userId == user.Id {
 		return fmt.Errorf("不可以关注自己")
 	}
-	follow := new(model.Follow)
+	follow := new(models2.Follow)
 	// 查询是否存在关注信息
 	bootstrap.Db.Where("follow_person=?", userId).Where("followed_person=?", user.Id).First(&follow)
 	if follow.Id > 0 {
@@ -79,7 +79,7 @@ func (n *Nul) CancelFollow(ctx *gin.Context, params request.Follow) error {
 	idInt64, _ := strconv.ParseInt(i["id"], 10, 64)
 	userId := uint64(idInt64)
 
-	follow := new(model.Follow)
+	follow := new(models2.Follow)
 	// 查询是否存在关注信息
 	bootstrap.Db.Where("follow_person=?", userId).Where("followed_person=?", params.FollowedPerson).First(&follow)
 	if follow.Id <= 0 {
@@ -109,7 +109,7 @@ func (f *FollowList) FollowList(ctx *gin.Context, params request.FollowList) err
 	f.Page = params.Page
 	f.PageSize = params.PageSize
 
-	fo := new(model.Follow)
+	fo := new(models2.Follow)
 	// 查询总数
 	bootstrap.Db.Model(&fo).Where("follow_person=?", userId).Count(&f.Total)
 
@@ -147,7 +147,7 @@ func (f *FollowList) FansList(ctx *gin.Context, params request.FollowList) error
 	f.Page = params.Page
 	f.PageSize = params.PageSize
 
-	fo := new(model.Follow)
+	fo := new(models2.Follow)
 	// 查询总数
 	bootstrap.Db.Model(&fo).Where("followed_person=?", userId).Count(&f.Total)
 

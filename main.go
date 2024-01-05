@@ -42,6 +42,9 @@ func main() {
 	// log日志
 	bootstrap.Log = bootstrap.InitializeLog()
 
+	// 初始化验证器
+	bootstrap.InitializeValidator()
+
 	s := route.Router()
 	err := s.Run(config.Config.Server.Port)
 	if err != nil {

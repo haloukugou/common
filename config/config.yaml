@@ -3,14 +3,17 @@ server:
   env: dev
 
 mysql:
-  host: go_dj_mysql
+  #host: go_dj_mysql
+  host: 127.0.0.1
   port: 3306
   db: go
   user: homestead
-  password: 123456
+  #password: 123456
+  password: secret
 
 redis:
-  host: go_dj_redis
+  #host: go_dj_redis
+  host: 127.0.0.1
   port: 6379
   auth:
   db: 0
